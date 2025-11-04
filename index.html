@@ -28,7 +28,7 @@
 
     /* Branding Header */
     .branding {
-      position: sticky;
+      position: fixed;
       top: 15px;
       left: 15px;
       z-index: 1000;
@@ -333,7 +333,7 @@
     /* Instruction Text */
     .instruction-text {
       position: absolute;
-      bottom: 90px;
+      bottom: 200px;
       text-align: center;
       font-size: 1.15em;
       color: #6B675F;
@@ -496,7 +496,7 @@
     /* Practice Levels Section */
     .practice-levels {
       position: absolute;
-      bottom: 15px;
+      bottom: 120px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -984,24 +984,28 @@
       }
 
       .instruction-text {
-        bottom: 100px;
+        position: relative;
+        bottom: auto;
         font-size: 1em;
         padding: 0 15px;
+        margin-bottom: 20px;
       }
 
       .practice-levels {
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        gap: 6px;
-        max-width: calc(100% - 20px);
+        position: relative;
+        left: auto;
+        transform: none;
+        margin-top: 30px;
+        gap: 10px 15px;
+        max-width: calc(100% - 40px);
         padding: 0 10px;
+        justify-content: space-between;
       }
 
       .practice-level-btn {
-        min-width: 70px;
-        padding: 8px 10px;
-        flex: 0 1 auto;
+        min-width: 60px;
+        padding: 10px 12px;
+        flex: 0 1 45%;
       }
 
       .level-badge {
@@ -1187,6 +1191,12 @@
     let showRussian = true;
     let nightMode = false;
     let expandedCard = null;
+
+    // Load language preference from localStorage
+    const savedLang = localStorage.getItem('language');
+    if (savedLang) {
+      showRussian = (savedLang === 'ru');
+    }
 
     // Content Data with full sentences
     const contentData = {
@@ -1650,6 +1660,28 @@
       ]
     };
 
+    // Centralized Language Application Function
+    function applyLanguageToAllElements() {
+      const russianElements = document.querySelectorAll('.russian-text');
+      const englishElements = document.querySelectorAll('.english-text');
+
+      russianElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      englishElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('visible');
+        } else {
+          el.classList.add('visible');
+        }
+      });
+    }
+
     // Select Context (TIME or PLACE)
     function selectContext(context) {
       selectedContext = context;
@@ -1832,6 +1864,9 @@
       
       // Show content view
       document.getElementById('contentView').classList.add('active');
+
+      // Apply language state to all elements
+      applyLanguageToAllElements();
     }
 
     // Toggle Category Expansion
@@ -1883,6 +1918,7 @@
         document.getElementById('instructionText').classList.remove('hidden');
         document.getElementById('practiceLevels').classList.remove('hidden');
         updateInstruction();
+        applyLanguageToAllElements();
       }, 300);
     }
 
@@ -1894,50 +1930,21 @@
       } else {
         instructionEl.innerHTML = '<span class="russian-text">👆 Теперь коснитесь IN, ON или AT</span><span class="english-text">👆 Now tap IN, ON, or AT</span>';
       }
-      
-      // Apply current language state to new elements
-      const russianElements = instructionEl.querySelectorAll('.russian-text');
-      const englishElements = instructionEl.querySelectorAll('.english-text');
-      
-      russianElements.forEach(el => {
-        if (!showRussian) {
-          el.classList.add('hidden');
-        }
-      });
-      
-      englishElements.forEach(el => {
-        if (showRussian) {
-          el.classList.remove('visible');
-        } else {
-          el.classList.add('visible');
-        }
-      });
+
+      // Apply language state to all elements
+      applyLanguageToAllElements();
     }
 
     // Toggle Language
     function toggleLanguage() {
       showRussian = !showRussian;
-      const russianElements = document.querySelectorAll('.russian-text');
-      const englishElements = document.querySelectorAll('.english-text');
-      
-      russianElements.forEach(el => {
-        if (showRussian) {
-          el.classList.remove('hidden');
-        } else {
-          el.classList.add('hidden');
-        }
-      });
 
-      englishElements.forEach(el => {
-        if (showRussian) {
-          el.classList.remove('visible');
-        } else {
-          el.classList.add('visible');
-        }
-      });
-      
-      updateInstruction();
-      
+      // Store language preference in localStorage
+      localStorage.setItem('language', showRussian ? 'ru' : 'en');
+
+      // Apply language to all elements
+      applyLanguageToAllElements();
+
       // Update content context if visible
       if (selectedSection && selectedContext) {
         const contextEl = document.getElementById('contentContext');
@@ -1946,7 +1953,7 @@
         } else {
           contextEl.innerHTML = selectedContext === 'time' ? '🕐 TIME' : '📍 PLACE';
         }
-        
+
         // Update flip card content
         updateFlipCardContent();
       }
@@ -2069,6 +2076,9 @@
       if (flipCardHint) {
         flipCardHint.textContent = hintText;
       }
+
+      // Apply language state to all elements
+      applyLanguageToAllElements();
     }
 
     // Open Practice Level
@@ -2119,28 +2129,13 @@
         
         exercisesEl.appendChild(card);
       });
-      
-      // Apply language state to new elements
-      const russianElements = exercisesEl.querySelectorAll('.russian-text');
-      const englishElements = exercisesEl.querySelectorAll('.english-text');
-      
-      russianElements.forEach(el => {
-        if (!showRussian) {
-          el.classList.add('hidden');
-        }
-      });
-      
-      englishElements.forEach(el => {
-        if (showRussian) {
-          el.classList.remove('visible');
-        } else {
-          el.classList.add('visible');
-        }
-      });
-      
+
       // Show practice view and reset button
       document.getElementById('practiceView').classList.add('active');
       document.getElementById('resetBtn').classList.add('visible');
+
+      // Apply language state to all elements
+      applyLanguageToAllElements();
     }
 
     // Check Answer
@@ -2175,6 +2170,7 @@
 
     // Initialize
     updateInstruction();
+    applyLanguageToAllElements();
   </script>
 </body>
 </html>
