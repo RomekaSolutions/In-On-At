@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prepositions: IN / ON / AT</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #FAF8F5 0%, #E8F1ED 100%);
+      color: #2D2A26;
+      overflow: hidden;
+      height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.night-mode {
+      background: linear-gradient(135deg, #1C1B1A 0%, #2F4238 100%);
+      color: #F2EFE9;
+    }
+
+    /* Branding Header */
+    .branding {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      background: #F57C00;
+      color: #FFFFFF;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.95em;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .brand-by {
+      color: #666666;
+      font-size: 0.9em;
+      font-weight: 400;
+    }
+
+    body.night-mode .brand-by {
+      color: #C9C5BD;
+    }
+
+    /* Control Buttons */
+    .controls {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .control-btn {
+      background: #7BA591;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-weight: 600;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+
+    body.night-mode .control-btn {
+      background: #5F8A7A;
+    }
+
+    /* Main Container */
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Context Selection (TIME/PLACE) */
+    .context-selector {
+      position: absolute;
+      top: 115px;
+      display: flex;
+      gap: 45px;
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+
+    .context-selector.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-20px);
+    }
+
+    .context-btn {
+      background: white;
+      border: 3px solid #7BA591;
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-size: 2.2em;
+    }
+
+    body.night-mode .context-btn {
+      background: #2A2826;
+      border-color: #5F8A7A;
+    }
+
+    .context-btn.selected {
+      background: #7BA591;
+      border-color: #5F8A7A;
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(123, 165, 145, 0.4);
+    }
+
+    body.night-mode .context-btn.selected {
+      background: #5F8A7A;
+    }
+
+    .context-btn:active {
+      transform: scale(0.95);
+    }
+
+    .context-label {
+      font-size: 0.35em;
+      font-weight: 700;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #2D2A26;
+    }
+
+    .context-btn.selected .context-label {
+      color: white;
+    }
+
+    body.night-mode .context-label {
+      color: #F2EFE9;
+    }
+
+    /* SVG Triangle Container */
+    .triangle-container {
+      width: 90vw;
+      max-width: 660px;
+      height: 65vh;
+      max-height: 750px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .triangle-container.hidden {
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+    }
+
+    .triangle-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .triangle-section {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .triangle-section.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .triangle-section:not(.disabled):active {
+      opacity: 0.9;
+    }
+
+    .section-text {
+      font-size: 38px;
+      font-weight: 700;
+      fill: white;
+      text-anchor: middle;
+      pointer-events: none;
+      letter-spacing: 3px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* Info Flip Cards */
+    .info-card {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #2E7D32;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    body.night-mode .info-icon {
+      background: rgba(42, 40, 38, 0.95);
+      color: #A8D1AA;
+    }
+
+    .info-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .info-tooltip {
+      position: absolute;
+      background: white;
+      border: 3px solid #7BA591;
+      border-radius: 12px;
+      padding: 15px;
+      min-width: 250px;
+      max-width: 300px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      font-size: 0.9em;
+      line-height: 1.5;
+      color: #2D2A26;
+      z-index: 1000;
+    }
+
+    body.night-mode .info-tooltip {
+      background: #2A2826;
+      border-color: #5F8A7A;
+      color: #F2EFE9;
+    }
+
+    .info-card:hover .info-tooltip {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .info-tooltip-title {
+      font-weight: 700;
+      font-size: 1.1em;
+      margin-bottom: 8px;
+      color: #2E7D32;
+    }
+
+    body.night-mode .info-tooltip-title {
+      color: #A8D1AA;
+    }
+
+    .info-in {
+      top: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .info-in .info-tooltip {
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .info-on {
+      top: 55%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .info-on .info-tooltip {
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .info-at {
+      top: 75%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .info-at .info-tooltip {
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Instruction Text */
+    .instruction-text {
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
+      font-size: 1.15em;
+      color: #6B675F;
+      font-weight: 600;
+      transition: all 0.4s ease;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    body.night-mode .instruction-text {
+      color: #C9C5BD;
+    }
+
+    .instruction-text.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Flip Card Styles */
+    .flip-card-container {
+      perspective: 1000px;
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      margin: 0 auto 30px;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+
+    .flip-card {
+      position: relative;
+      width: 100%;
+      min-height: 180px;
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-face {
+      position: absolute;
+      width: 100%;
+      min-height: 180px;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flip-card-front {
+      padding: 30px;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .flip-card-front.in-front {
+      background: linear-gradient(135deg, #5DADE2 0%, #48C9B0 100%);
+    }
+
+    .flip-card-front.on-front {
+      background: linear-gradient(135deg, #F1948A 0%, #E59866 100%);
+    }
+
+    .flip-card-front.at-front {
+      background: linear-gradient(135deg, #BB8FCE 0%, #9B59B6 100%);
+    }
+
+    body.night-mode .flip-card-front.in-front {
+      background: linear-gradient(135deg, #2E5F7A 0%, #2F6B5F 100%);
+    }
+
+    body.night-mode .flip-card-front.on-front {
+      background: linear-gradient(135deg, #8F5F57 0%, #8F6647 100%);
+    }
+
+    body.night-mode .flip-card-front.at-front {
+      background: linear-gradient(135deg, #6B5F7D 0%, #5F4A75 100%);
+    }
+
+    .flip-card-front h2 {
+      font-size: 3.5em;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .flip-card-hint {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75em;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+
+    .flip-card-back {
+      padding: 25px;
+      background: white;
+      transform: rotateY(180deg);
+      overflow-y: auto;
+    }
+
+    .flip-card-back.in-back {
+      border: 3px solid #48C9B0;
+    }
+
+    .flip-card-back.on-back {
+      border: 3px solid #E59866;
+    }
+
+    .flip-card-back.at-back {
+      border: 3px solid #9B59B6;
+    }
+
+    body.night-mode .flip-card-back {
+      background: #2A2826;
+      color: #F2EFE9;
+    }
+
+    body.night-mode .flip-card-back.in-back {
+      border-color: #2F6B5F;
+    }
+
+    body.night-mode .flip-card-back.on-back {
+      border-color: #8F6647;
+    }
+
+    body.night-mode .flip-card-back.at-back {
+      border-color: #5F4A75;
+    }
+
+    .flip-card-back p {
+      font-size: 0.95em;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .flip-card-back ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .flip-card-back li {
+      font-size: 0.9em;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    /* Practice Levels Section */
+    .practice-levels {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+      transition: all 0.4s ease;
+      padding: 0 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    .practice-levels.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(20px);
+    }
+
+    .practice-level-btn {
+      background: white;
+      border: 3px solid #7BA591;
+      border-radius: 12px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+    }
+
+    body.night-mode .practice-level-btn {
+      background: #2A2826;
+      border-color: #5F8A7A;
+    }
+
+    .practice-level-btn:active {
+      transform: scale(0.95);
+    }
+
+    .practice-level-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(123, 165, 145, 0.3);
+      border-color: #5F8A7A;
+    }
+
+    body.night-mode .practice-level-btn:hover {
+      border-color: #A8D1AA;
+    }
+
+    .level-badge {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #2E7D32;
+      margin-bottom: 5px;
+    }
+
+    body.night-mode .level-badge {
+      color: #A8D1AA;
+    }
+
+    .level-label {
+      font-size: 0.75em;
+      font-weight: 600;
+      color: #6B675F;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    body.night-mode .level-label {
+      color: #C9C5BD;
+    }
+
+    /* Practice View */
+    .practice-view {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #FAF8F5;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      overflow-y: auto;
+      padding: 100px 20px 80px;
+      z-index: 50;
+    }
+
+    body.night-mode .practice-view {
+      background: #1C1B1A;
+    }
+
+    .practice-view.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .practice-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .practice-level-title {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: #2E7D32;
+      margin-bottom: 10px;
+    }
+
+    body.night-mode .practice-level-title {
+      color: #A8D1AA;
+    }
+
+    .practice-subtitle {
+      font-size: 1.1em;
+      color: #6B675F;
+      font-weight: 600;
+    }
+
+    body.night-mode .practice-subtitle {
+      color: #C9C5BD;
+    }
+
+    .practice-exercises {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .exercise-card {
+      background: white;
+      border: 3px solid #7BA591;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+    }
+
+    body.night-mode .exercise-card {
+      background: #2A2826;
+      border-color: #5F8A7A;
+    }
+
+    .exercise-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .exercise-number {
+      display: inline-block;
+      background: #7BA591;
+      color: white;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 0.9em;
+    }
+
+    body.night-mode .exercise-number {
+      background: #5F8A7A;
+    }
+
+    .exercise-question {
+      font-size: 1.15em;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #2D2A26;
+    }
+
+    body.night-mode .exercise-question {
+      color: #F2EFE9;
+    }
+
+    .exercise-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: #F5F5F5;
+      border: 2px solid #CCC9C5;
+      border-radius: 10px;
+      padding: 15px 20px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1em;
+      color: #2D2A26;
+    }
+
+    body.night-mode .option-btn {
+      background: #1C1B1A;
+      border-color: #555250;
+      color: #F2EFE9;
+    }
+
+    .option-btn:hover {
+      background: #E8F5E9;
+      border-color: #7BA591;
+      transform: translateX(5px);
+    }
+
+    body.night-mode .option-btn:hover {
+      background: #2F4238;
+      border-color: #5F8A7A;
+    }
+
+    .option-btn.correct {
+      background: #E8F5E9;
+      border-color: #4CAF50;
+      color: #2E7D32;
+      font-weight: 600;
+    }
+
+    body.night-mode .option-btn.correct {
+      background: #2F4238;
+      border-color: #5F8A7A;
+      color: #A8D1AA;
+    }
+
+    .option-btn.wrong {
+      background: #FFEBEE;
+      border-color: #EF5350;
+      color: #C62828;
+    }
+
+    body.night-mode .option-btn.wrong {
+      background: #4A3230;
+      border-color: #B85F5A;
+      color: #E5A8A6;
+    }
+
+    .option-btn.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Content View */
+    .content-view {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #FAF8F5;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      overflow-y: auto;
+      padding: 100px 20px 80px;
+      z-index: 50;
+    }
+
+    body.night-mode .content-view {
+      background: #1C1B1A;
+    }
+
+    .content-view.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Reset Button */
+    .reset-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #7BA591;
+      border: none;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+      color: white;
+    }
+
+    body.night-mode .reset-btn {
+      background: #5F8A7A;
+    }
+
+    .reset-btn.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1);
+    }
+
+    .reset-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Content Header */
+    .content-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .content-context {
+      font-size: 1.2em;
+      color: #6B675F;
+      font-weight: 600;
+    }
+
+    body.night-mode .content-context {
+      color: #C9C5BD;
+    }
+
+    /* Category Cards */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .category-card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      border-left: 4px solid #7BA591;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    body.night-mode .category-card {
+      background: #2A2826;
+      border-left-color: #5F8A7A;
+    }
+
+    .category-card:active {
+      transform: scale(0.98);
+    }
+
+    .category-card.expanded {
+      border-left-width: 6px;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .category-name {
+      font-size: 0.9em;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #7BA591;
+      letter-spacing: 0.5px;
+    }
+
+    body.night-mode .category-name {
+      color: #A8D1AA;
+    }
+
+    .expand-icon {
+      font-size: 1.2em;
+      color: #7BA591;
+      transition: transform 0.3s ease;
+    }
+
+    body.night-mode .expand-icon {
+      color: #A8D1AA;
+    }
+
+    .category-card.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    .category-preview {
+      font-size: 0.9em;
+      color: #6B675F;
+      line-height: 1.5;
+    }
+
+    body.night-mode .category-preview {
+      color: #C9C5BD;
+    }
+
+    .category-sentences {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      margin-top: 0;
+    }
+
+    .category-card.expanded .category-sentences {
+      max-height: 500px;
+      margin-top: 15px;
+    }
+
+    .sentence-item {
+      padding: 10px 12px;
+      background: #F5F5F5;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #2D2A26;
+    }
+
+    body.night-mode .sentence-item {
+      background: #1C1B1A;
+      color: #F2EFE9;
+    }
+
+    .sentence-item strong {
+      color: #2E7D32;
+      background: #E8F1ED;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    body.night-mode .sentence-item strong {
+      color: #A8D1AA;
+      background: #2F4238;
+    }
+
+    /* Russian text toggle */
+    .russian-text {
+      transition: opacity 0.3s ease;
+    }
+
+    .russian-text.hidden {
+      display: none;
+    }
+
+    .english-text {
+      display: none;
+    }
+
+    .english-text.visible {
+      display: inline;
+    }
+
+    @media (max-width: 480px) {
+      .branding {
+        top: 10px;
+        left: 10px;
+      }
+
+      .brand-badge {
+        padding: 6px 14px;
+        font-size: 0.85em;
+      }
+
+      .controls {
+        top: 10px;
+        right: 10px;
+      }
+
+      .control-btn {
+        padding: 8px 12px;
+        font-size: 0.85em;
+      }
+
+      .context-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8em;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-text {
+        font-size: 32px;
+      }
+
+      .practice-levels {
+        bottom: 60px;
+        gap: 8px;
+      }
+
+      .practice-level-btn {
+        min-width: 65px;
+        padding: 12px 15px;
+      }
+
+      .level-badge {
+        font-size: 1.3em;
+      }
+
+      .level-label {
+        font-size: 0.65em;
+      }
+
+      .practice-level-title {
+        font-size: 1.8em;
+      }
+
+      .exercise-card {
+        padding: 20px;
+      }
+
+      .exercise-question {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Branding -->
+  <div class="branding">
+    <div class="brand-badge">GRASP</div>
+    <div class="brand-by">by Gregor</div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="control-btn" onclick="toggleLanguage()" title="Toggle Language">
+      <span id="lang-toggle-text">EN ⇄ RU</span>
+    </button>
+    <button class="control-btn" onclick="toggleNightMode()" title="Toggle Night Mode">
+      <span id="night-toggle-icon">🌙</span>
+    </button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Context Selector -->
+    <div class="context-selector" id="contextSelector">
+      <div class="context-btn" id="timeBtn" onclick="selectContext('time')">
+        <div>🕐</div>
+        <div class="context-label">
+          <span class="russian-text">Время</span>
+          <span class="english-text">Time</span>
+        </div>
+      </div>
+      <div class="context-btn" id="placeBtn" onclick="selectContext('place')">
+        <div>📍</div>
+        <div class="context-label">
+          <span class="russian-text">Место</span>
+          <span class="english-text">Place</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Triangle Container with SVG -->
+    <div class="triangle-container" id="triangleContainer">
+      <svg class="triangle-svg" viewBox="0 0 540 516" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Gradients for light mode -->
+          <linearGradient id="gradIn" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#5DADE2;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#48C9B0;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="gradOn" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#F1948A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#E59866;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="gradAt" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#BB8FCE;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#9B59B6;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- One equilateral triangle divided into three sections - 1.2x bigger -->
+        
+        <!-- IN section (top third) -->
+        <polygon 
+          id="sectionIn"
+          class="triangle-section disabled" 
+          points="36,72 504,72 426,204 114,204" 
+          fill="url(#gradIn)"
+          onclick="selectSection('in')"
+        />
+        <text class="section-text" x="270" y="153">IN</text>
+        
+        <!-- ON section (middle third) -->
+        <polygon 
+          id="sectionOn"
+          class="triangle-section disabled" 
+          points="114,204 426,204 348,336 192,336" 
+          fill="url(#gradOn)"
+          onclick="selectSection('on')"
+        />
+        <text class="section-text" x="270" y="284">ON</text>
+        
+        <!-- AT section (bottom third - point) -->
+        <polygon 
+          id="sectionAt"
+          class="triangle-section disabled" 
+          points="192,336 348,336 270,468" 
+          fill="url(#gradAt)"
+          onclick="selectSection('at')"
+        />
+        <text class="section-text" x="270" y="400">AT</text>
+      </svg>
+    </div>
+
+    <!-- Instruction Text -->
+    <div class="instruction-text" id="instructionText">
+      <span class="russian-text">👆 Сначала выберите ВРЕМЯ или МЕСТО</span>
+      <span class="english-text">👆 Choose TIME or PLACE first</span>
+    </div>
+
+    <!-- Practice Levels -->
+    <div class="practice-levels" id="practiceLevels">
+      <div class="practice-level-btn" onclick="openPractice('A2')">
+        <div class="level-badge">A2</div>
+        <div class="level-label">
+          <span class="russian-text">Начальный</span>
+          <span class="english-text">Elementary</span>
+        </div>
+      </div>
+      <div class="practice-level-btn" onclick="openPractice('B1')">
+        <div class="level-badge">B1</div>
+        <div class="level-label">
+          <span class="russian-text">Средний</span>
+          <span class="english-text">Intermediate</span>
+        </div>
+      </div>
+      <div class="practice-level-btn" onclick="openPractice('B2')">
+        <div class="level-badge">B2</div>
+        <div class="level-label">
+          <span class="russian-text">Выше среднего</span>
+          <span class="english-text">Upper Int.</span>
+        </div>
+      </div>
+      <div class="practice-level-btn" onclick="openPractice('C1')">
+        <div class="level-badge">C1</div>
+        <div class="level-label">
+          <span class="russian-text">Продвинутый</span>
+          <span class="english-text">Advanced</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practice View -->
+  <div class="practice-view" id="practiceView">
+    <div class="practice-header">
+      <div class="practice-level-title" id="practiceTitle"></div>
+      <div class="practice-subtitle">
+        <span class="russian-text">Практика использования IN / ON / AT</span>
+        <span class="english-text">Practice using IN / ON / AT</span>
+      </div>
+    </div>
+    <div class="practice-exercises" id="practiceExercises"></div>
+  </div>
+
+  <!-- Content View -->
+  <div class="content-view" id="contentView">
+    <div class="content-header">
+      <div class="content-context" id="contentContext"></div>
+    </div>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </div>
+
+  <!-- Reset Button -->
+  <button class="reset-btn" id="resetBtn" onclick="resetView()">
+    ▲
+  </button>
+
+  <script>
+    // State
+    let selectedContext = null;
+    let selectedSection = null;
+    let showRussian = true;
+    let nightMode = false;
+    let expandedCard = null;
+
+    // Content Data with full sentences
+    const contentData = {
+      in: {
+        time: [
+          { 
+            category: "Centuries", 
+            categoryRu: "Столетия", 
+            preview: "The 20th century, The 1900's",
+            sentences: [
+              "My grandparents lived <strong>in</strong> the 20th century.",
+              "The Industrial Revolution happened <strong>in</strong> the 19th century.",
+              "We're living <strong>in</strong> the 21st century.",
+              "Life was very different <strong>in</strong> the 1800's."
+            ]
+          },
+          { 
+            category: "Decades", 
+            categoryRu: "Десятилетия", 
+            preview: "The 90's, The 80's",
+            sentences: [
+              "My parents got married <strong>in</strong> the 90's.",
+              "Rock music was huge <strong>in</strong> the 80's.",
+              "She moved to Bangkok <strong>in</strong> the 2010's."
+            ]
+          },
+          { 
+            category: "Years", 
+            categoryRu: "Годы", 
+            preview: "2020, 2023, 2025",
+            sentences: [
+              "She moved to Bangkok <strong>in</strong> 2020.",
+              "I started learning Russian <strong>in</strong> 2023.",
+              "We'll graduate <strong>in</strong> 2026."
+            ]
+          },
+          { 
+            category: "Months", 
+            categoryRu: "Месяцы", 
+            preview: "March, June, December",
+            sentences: [
+              "We're going to Phuket <strong>in</strong> December.",
+              "His birthday is <strong>in</strong> March.",
+              "Schools start <strong>in</strong> June <strong>in</strong> Thailand."
+            ]
+          },
+          { 
+            category: "Weeks", 
+            categoryRu: "Недели", 
+            preview: "5 weeks",
+            sentences: [
+              "I'll finish this project <strong>in</strong> 5 weeks.",
+              "The baby will arrive <strong>in</strong> 3 weeks.",
+              "We're getting married <strong>in</strong> two weeks!"
+            ]
+          },
+          { 
+            category: "Seasons", 
+            categoryRu: "Времена года", 
+            preview: "Spring, Summer, Winter",
+            sentences: [
+              "It rains a lot <strong>in</strong> summer <strong>in</strong> Bangkok.",
+              "We visit Russia <strong>in</strong> winter.",
+              "Flowers bloom <strong>in</strong> spring."
+            ]
+          },
+          { 
+            category: "Periods of Time", 
+            categoryRu: "Периоды времени", 
+            preview: "The future, The past",
+            sentences: [
+              "<strong>In</strong> the future, we'll live on Mars.",
+              "<strong>In</strong> the past, people wrote letters.",
+              "Life was different <strong>in</strong> the old days."
+            ]
+          },
+          { 
+            category: "Holidays", 
+            categoryRu: "Праздники", 
+            preview: "The Easter holiday",
+            sentences: [
+              "We don't work <strong>in</strong> the Easter holiday.",
+              "Where are you going <strong>in</strong> the summer holiday?",
+              "I'm visiting family <strong>in</strong> the Christmas holiday."
+            ]
+          },
+          { 
+            category: "Parts of the Day", 
+            categoryRu: "Части дня", 
+            preview: "The morning, The evening",
+            sentences: [
+              "I study Thai <strong>in</strong> the morning.",
+              "She goes to the gym <strong>in</strong> the evening.",
+              "We eat dinner <strong>in</strong> the afternoon."
+            ]
+          }
+        ],
+        place: [
+          { 
+            category: "Countries", 
+            categoryRu: "Страны", 
+            preview: "Thailand, Russia, France",
+            sentences: [
+              "She lives <strong>in</strong> Thailand.",
+              "I was born <strong>in</strong> Russia.",
+              "He works <strong>in</strong> France.",
+              "We met <strong>in</strong> China."
+            ]
+          },
+          { 
+            category: "Cities", 
+            categoryRu: "Города", 
+            preview: "Bangkok, Moscow, Paris",
+            sentences: [
+              "We met <strong>in</strong> Bangkok.",
+              "She studied <strong>in</strong> Moscow.",
+              "They live <strong>in</strong> Paris.",
+              "I grew up <strong>in</strong> London."
+            ]
+          },
+          { 
+            category: "Neighbourhoods", 
+            categoryRu: "Районы", 
+            preview: "Sukhumvit, Silom",
+            sentences: [
+              "I work <strong>in</strong> Sukhumvit.",
+              "He lives <strong>in</strong> Silom.",
+              "The restaurant is <strong>in</strong> Chinatown."
+            ]
+          },
+          { 
+            category: "Enclosed Spaces", 
+            categoryRu: "Закрытые пространства", 
+            preview: "A car, A room, A building",
+            sentences: [
+              "The keys are <strong>in</strong> the car.",
+              "She's waiting <strong>in</strong> the room.",
+              "We work <strong>in</strong> a tall building.",
+              "I left my phone <strong>in</strong> the taxi."
+            ]
+          }
+        ]
+      },
+      on: {
+        time: [
+          { 
+            category: "Days", 
+            categoryRu: "Дни недели", 
+            preview: "Monday, Friday, Saturday",
+            sentences: [
+              "We meet <strong>on</strong> Monday.",
+              "The shop is closed <strong>on</strong> Sunday.",
+              "I have a class <strong>on</strong> Friday."
+            ]
+          },
+          { 
+            category: "Dates", 
+            categoryRu: "Даты", 
+            preview: "April 3rd, January 15th",
+            sentences: [
+              "My birthday is <strong>on</strong> April 3rd.",
+              "We're leaving <strong>on</strong> January 15th.",
+              "The meeting is <strong>on</strong> December 10th."
+            ]
+          },
+          { 
+            category: "Holidays with 'Day'", 
+            categoryRu: "Праздники со словом 'Day'", 
+            preview: "Easter Day, Christmas Day",
+            sentences: [
+              "We have lunch together <strong>on</strong> Christmas Day.",
+              "The shops are closed <strong>on</strong> Easter Day.",
+              "What do you do <strong>on</strong> Boxing Day?"
+            ]
+          },
+          { 
+            category: "Special Days", 
+            categoryRu: "Особые дни", 
+            preview: "My birthday, New Year's Eve",
+            sentences: [
+              "What are you doing <strong>on</strong> your birthday?",
+              "We celebrate <strong>on</strong> New Year's Eve.",
+              "I'm travelling <strong>on</strong> Valentine's Day."
+            ]
+          },
+          { 
+            category: "Day + Part", 
+            categoryRu: "День + Часть", 
+            preview: "Sunday morning, Friday night",
+            sentences: [
+              "Let's meet <strong>on</strong> Friday night.",
+              "I go to the temple <strong>on</strong> Sunday morning.",
+              "We have a test <strong>on</strong> Monday afternoon."
+            ]
+          }
+        ],
+        place: [
+          { 
+            category: "Streets & Avenues", 
+            categoryRu: "Улицы и проспекты", 
+            preview: "Sukhumvit Road, Silom Street",
+            sentences: [
+              "The restaurant is <strong>on</strong> Sukhumvit Road.",
+              "I live <strong>on</strong> Silom Street.",
+              "Meet me <strong>on</strong> Soi 94.",
+              "The embassy is <strong>on</strong> Ratchadamri Avenue.",
+              "We met <strong>on</strong> Fifth Avenue.",
+              "The shop is <strong>on</strong> the main street."
+            ]
+          },
+          { 
+            category: "Surfaces", 
+            categoryRu: "Поверхности", 
+            preview: "The floor, The table, The wall",
+            sentences: [
+              "The book is <strong>on</strong> the table.",
+              "Don't leave your bag <strong>on</strong> the floor.",
+              "There's a beautiful picture <strong>on</strong> the wall.",
+              "Put your phone <strong>on</strong> the desk.",
+              "The keys are <strong>on</strong> the counter."
+            ]
+          },
+          { 
+            category: "Transport", 
+            categoryRu: "Транспорт", 
+            preview: "A bus, The BTS, A train",
+            sentences: [
+              "I'm <strong>on</strong> the bus.",
+              "She's <strong>on</strong> the BTS.",
+              "We met <strong>on</strong> the train.",
+              "He's <strong>on</strong> a plane to Paris."
+            ]
+          },
+          { 
+            category: "Communications", 
+            categoryRu: "Коммуникации", 
+            preview: "The radio, The phone, The internet",
+            sentences: [
+              "I heard it <strong>on</strong> the radio.",
+              "She's <strong>on</strong> the phone.",
+              "I read it <strong>on</strong> the internet.",
+              "It was <strong>on</strong> the news."
+            ]
+          }
+        ]
+      },
+      at: {
+        time: [
+          { 
+            category: "Hours", 
+            categoryRu: "Часы", 
+            preview: "8 a.m., 3 p.m., 11:30",
+            sentences: [
+              "The class starts <strong>at</strong> 9 a.m.",
+              "We eat dinner <strong>at</strong> 7 p.m.",
+              "I wake up <strong>at</strong> 6:30.",
+              "Let's meet <strong>at</strong> noon."
+            ]
+          },
+          { 
+            category: "Parts of Day", 
+            categoryRu: "Части дня", 
+            preview: "Midnight, Noon, Night",
+            sentences: [
+              "We leave <strong>at</strong> midnight.",
+              "The meeting is <strong>at</strong> noon.",
+              "I study <strong>at</strong> night.",
+              "She works <strong>at</strong> dawn."
+            ]
+          },
+          { 
+            category: "The Moment", 
+            categoryRu: "Момент", 
+            preview: "The moment, Present",
+            sentences: [
+              "I'm busy <strong>at</strong> the moment.",
+              "She's working <strong>at</strong> present.",
+              "We can't talk <strong>at</strong> the moment."
+            ]
+          },
+          { 
+            category: "Weekends", 
+            categoryRu: "Выходные", 
+            preview: "The weekend, Weekends",
+            sentences: [
+              "I relax <strong>at</strong> the weekend.",
+              "Do you work <strong>at</strong> weekends?",
+              "We go to the beach <strong>at</strong> weekends.",
+              "What are you doing <strong>at</strong> the weekend?"
+            ]
+          },
+          { 
+            category: "Holidays (no 'Day')", 
+            categoryRu: "Праздники (без 'Day')", 
+            preview: "Easter, Christmas, Songkran",
+            sentences: [
+              "We celebrate <strong>at</strong> Easter.",
+              "I'm going home <strong>at</strong> Christmas.",
+              "Bangkok is beautiful <strong>at</strong> Songkran.",
+              "What are you doing <strong>at</strong> New Year?"
+            ]
+          }
+        ],
+        place: [
+          { 
+            category: "Addresses", 
+            categoryRu: "Адреса", 
+            preview: "456 State Street, 123 Sukhumvit",
+            sentences: [
+              "I live <strong>at</strong> 123 Sukhumvit Soi 11.",
+              "The office is <strong>at</strong> 456 State Street.",
+              "Meet me <strong>at</strong> 789 Silom Road.",
+              "She works <strong>at</strong> 55 Sukhumvit Soi 94."
+            ]
+          },
+          { 
+            category: "Specific Locations", 
+            categoryRu: "Конкретные места", 
+            preview: "The station, The airport, Home",
+            sentences: [
+              "Meet me <strong>at</strong> the station.",
+              "I'll wait <strong>at</strong> the airport.",
+              "She's <strong>at</strong> the shop.",
+              "I'm <strong>at</strong> home.",
+              "Let's meet <strong>at</strong> the temple."
+            ]
+          }
+        ]
+      }
+    };
+
+    // Practice Exercises Data
+    const practiceData = {
+      A2: [
+        {
+          question: "I wake up ___ 6:30 every morning.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with specific times."
+        },
+        {
+          question: "My birthday is ___ March.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with months."
+        },
+        {
+          question: "Let's meet ___ the station.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' for specific locations."
+        },
+        {
+          question: "I live ___ Bangkok.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with cities."
+        },
+        {
+          question: "The book is ___ the table.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' for surfaces."
+        }
+      ],
+      B1: [
+        {
+          question: "She was born ___ the 1990's.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with decades."
+        },
+        {
+          question: "I'll call you ___ Monday morning.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' with days of the week."
+        },
+        {
+          question: "They live ___ Sukhumvit Road.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' with street names."
+        },
+        {
+          question: "The meeting starts ___ noon.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with 'noon' and 'midnight'."
+        },
+        {
+          question: "I heard it ___ the radio.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' with the radio, TV, and internet."
+        }
+      ],
+      B2: [
+        {
+          question: "We celebrate Songkran ___ April.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with months."
+        },
+        {
+          question: "I'll be there ___ the weekend.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with 'weekend' in British English."
+        },
+        {
+          question: "She works ___ night.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with 'night' as a time period."
+        },
+        {
+          question: "The Industrial Revolution happened ___ the 19th century.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with centuries."
+        },
+        {
+          question: "We met ___ a conference in Moscow.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' for events and gatherings."
+        }
+      ],
+      C1: [
+        {
+          question: "They're arriving ___ Christmas Day.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' with specific days, even holidays with 'Day'."
+        },
+        {
+          question: "I'm busy ___ the moment, can I call you back?",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with 'the moment' and 'present'."
+        },
+        {
+          question: "We lived in that house ___ the 2010's.",
+          options: ["in", "on", "at"],
+          correct: 0,
+          explanation: "We use 'in' with decades."
+        },
+        {
+          question: "She's currently ___ a plane to Paris.",
+          options: ["in", "on", "at"],
+          correct: 1,
+          explanation: "We use 'on' with public transport vehicles."
+        },
+        {
+          question: "My office is ___ 123 Sukhumvit Soi 11.",
+          options: ["in", "on", "at"],
+          correct: 2,
+          explanation: "We use 'at' with specific addresses."
+        }
+      ]
+    };
+
+    // Select Context (TIME or PLACE)
+    function selectContext(context) {
+      selectedContext = context;
+      
+      // Update button states
+      document.getElementById('timeBtn').classList.toggle('selected', context === 'time');
+      document.getElementById('placeBtn').classList.toggle('selected', context === 'place');
+      
+      // Enable triangle sections
+      document.getElementById('sectionIn').classList.remove('disabled');
+      document.getElementById('sectionOn').classList.remove('disabled');
+      document.getElementById('sectionAt').classList.remove('disabled');
+      
+      // Update instruction
+      updateInstruction();
+    }
+
+    // Select Section (IN, ON, AT)
+    function selectSection(section) {
+      if (!selectedContext) return;
+      
+      selectedSection = section;
+      
+      // Hide triangle and context selector
+      document.getElementById('triangleContainer').classList.add('hidden');
+      document.getElementById('contextSelector').classList.add('hidden');
+      document.getElementById('instructionText').classList.add('hidden');
+      document.getElementById('practiceLevels').classList.add('hidden');
+      
+      // Show content
+      showContent();
+      
+      // Show reset button
+      document.getElementById('resetBtn').classList.add('visible');
+    }
+
+    // Show Content
+    function showContent() {
+      const content = contentData[selectedSection][selectedContext];
+      
+      // Update context
+      const contextEl = document.getElementById('contentContext');
+      if (showRussian) {
+        contextEl.innerHTML = selectedContext === 'time' ? '🕐 ВРЕМЯ' : '📍 МЕСТО';
+      } else {
+        contextEl.innerHTML = selectedContext === 'time' ? '🕐 TIME' : '📍 PLACE';
+      }
+      
+      // Create flip card content based on section
+      const flipCardData = {
+        in: {
+          frontText: 'IN',
+          frontClass: 'in-front',
+          backClass: 'in-back',
+          backContentEn: `
+            <p><strong>IN is at the widest part of the triangle.</strong></p>
+            <p>Use IN for BIG, GENERAL things:</p>
+            <ul>
+              <li>Whole countries (in Thailand, in Russia)</li>
+              <li>Entire cities (in Bangkok, in Moscow)</li>
+              <li>Long time periods (in 2025, in March, in the 1990's)</li>
+            </ul>
+            <p>Think: You're INSIDE something large and general.</p>
+          `,
+          backContentRu: `
+            <p><strong>IN находится в самой широкой части треугольника.</strong></p>
+            <p>Используйте IN для БОЛЬШИХ, ОБЩИХ вещей:</p>
+            <ul>
+              <li>Целые страны (in Thailand, in Russia)</li>
+              <li>Целые города (in Bangkok, in Moscow)</li>
+              <li>Длительные периоды (in 2025, in March, in the 1990's)</li>
+            </ul>
+            <p>Подумайте: Вы ВНУТРИ чего-то большого и общего.</p>
+          `
+        },
+        on: {
+          frontText: 'ON',
+          frontClass: 'on-front',
+          backClass: 'on-back',
+          backContentEn: `
+            <p><strong>ON is in the middle of the triangle - more specific.</strong></p>
+            <p>Use ON for things you can touch or that are MORE FOCUSED:</p>
+            <ul>
+              <li>Surfaces (on the table, on the floor)</li>
+              <li>Particular streets (on Sukhumvit Road)</li>
+              <li>Individual days (on Monday, on April 3rd)</li>
+            </ul>
+            <p>Think: You're ON TOP of something specific.</p>
+          `,
+          backContentRu: `
+            <p><strong>ON находится в середине треугольника - более конкретно.</strong></p>
+            <p>Используйте ON для вещей, которых можно коснуться, или более ТОЧНЫХ:</p>
+            <ul>
+              <li>Поверхности (on the table, on the floor)</li>
+              <li>Конкретные улицы (on Sukhumvit Road)</li>
+              <li>Отдельные дни (on Monday, on April 3rd)</li>
+            </ul>
+            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то конкретного.</p>
+          `
+        },
+        at: {
+          frontText: 'AT',
+          frontClass: 'at-front',
+          backClass: 'at-back',
+          backContentEn: `
+            <p><strong>AT is at the narrowest point - most precise.</strong></p>
+            <p>Use AT for EXACT, SPECIFIC locations and times:</p>
+            <ul>
+              <li>Exact times (at 8:30 a.m., at midnight)</li>
+              <li>Specific addresses (at 123 Sukhumvit Soi 11)</li>
+              <li>Pinpoint locations (at the station, at home)</li>
+            </ul>
+            <p>Think: You're AT A SINGLE POINT.</p>
+          `,
+          backContentRu: `
+            <p><strong>AT находится в самой узкой точке - максимально точно.</strong></p>
+            <p>Используйте AT для ТОЧНЫХ, КОНКРЕТНЫХ мест и времени:</p>
+            <ul>
+              <li>Точное время (at 8:30 a.m., at midnight)</li>
+              <li>Конкретные адреса (at 123 Sukhumvit Soi 11)</li>
+              <li>Точные места (at the station, at home)</li>
+            </ul>
+            <p>Подумайте: Вы В ОДНОЙ ТОЧКЕ.</p>
+          `
+        }
+      };
+      
+      const cardData = flipCardData[selectedSection];
+      const backContent = showRussian ? cardData.backContentRu : cardData.backContentEn;
+      const hintText = showRussian ? 'Нажмите, чтобы узнать больше ⓘ' : 'Tap to learn more ⓘ';
+      
+      // Build categories grid
+      const gridEl = document.getElementById('categoriesGrid');
+      gridEl.innerHTML = '';
+      
+      // Remove any existing flip cards before adding new one
+      const existingFlipCards = document.querySelectorAll('.flip-card-container');
+      existingFlipCards.forEach(card => card.remove());
+      
+      // Insert flip card before categories
+      const flipCardHTML = `
+        <div class="flip-card-container" onclick="flipCard(event)">
+          <div class="flip-card" id="flipCard">
+            <div class="flip-card-face flip-card-front ${cardData.frontClass}">
+              <h2>${cardData.frontText}</h2>
+              <div class="flip-card-hint">${hintText}</div>
+            </div>
+            <div class="flip-card-face flip-card-back ${cardData.backClass}">
+              ${backContent}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      gridEl.insertAdjacentHTML('beforebegin', flipCardHTML);
+      
+      // Build categories grid
+      content.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'category-card';
+        card.dataset.index = index;
+        card.onclick = () => toggleCategory(index);
+        
+        card.innerHTML = `
+          <div class="category-header">
+            <div class="category-name">
+              <span class="russian-text">${item.categoryRu}</span>
+              <span class="english-text">${item.category}</span>
+            </div>
+            <div class="expand-icon">▼</div>
+          </div>
+          <div class="category-preview">${item.preview}</div>
+          <div class="category-sentences">
+            ${item.sentences.map(s => `<div class="sentence-item">${s}</div>`).join('')}
+          </div>
+        `;
+        
+        gridEl.appendChild(card);
+      });
+      
+      // Show content view
+      document.getElementById('contentView').classList.add('active');
+    }
+
+    // Toggle Category Expansion
+    function toggleCategory(index) {
+      const cards = document.querySelectorAll('.category-card');
+      const clickedCard = cards[index];
+      
+      if (expandedCard === index) {
+        // Collapse
+        clickedCard.classList.remove('expanded');
+        expandedCard = null;
+      } else {
+        // Collapse any previously expanded
+        cards.forEach(card => card.classList.remove('expanded'));
+        // Expand clicked
+        clickedCard.classList.add('expanded');
+        expandedCard = index;
+      }
+    }
+
+    // Reset View
+    function resetView() {
+      selectedContext = null;
+      selectedSection = null;
+      expandedCard = null;
+      
+      // Reset button states
+      document.getElementById('timeBtn').classList.remove('selected');
+      document.getElementById('placeBtn').classList.remove('selected');
+      
+      // Disable triangle sections
+      document.getElementById('sectionIn').classList.add('disabled');
+      document.getElementById('sectionOn').classList.add('disabled');
+      document.getElementById('sectionAt').classList.add('disabled');
+      
+      // Hide content and reset button
+      document.getElementById('contentView').classList.remove('active');
+      document.getElementById('practiceView').classList.remove('active');
+      document.getElementById('resetBtn').classList.remove('visible');
+      
+      // Remove any flip cards
+      const existingFlipCards = document.querySelectorAll('.flip-card-container');
+      existingFlipCards.forEach(card => card.remove());
+      
+      // Show triangle and context selector
+      setTimeout(() => {
+        document.getElementById('triangleContainer').classList.remove('hidden');
+        document.getElementById('contextSelector').classList.remove('hidden');
+        document.getElementById('instructionText').classList.remove('hidden');
+        document.getElementById('practiceLevels').classList.remove('hidden');
+        updateInstruction();
+      }, 300);
+    }
+
+    // Update Instruction Text
+    function updateInstruction() {
+      const instructionEl = document.getElementById('instructionText');
+      if (!selectedContext) {
+        instructionEl.innerHTML = '<span class="russian-text">👆 Сначала выберите ВРЕМЯ или МЕСТО</span><span class="english-text">👆 Choose TIME or PLACE first</span>';
+      } else {
+        instructionEl.innerHTML = '<span class="russian-text">👆 Теперь коснитесь IN, ON или AT</span><span class="english-text">👆 Now tap IN, ON, or AT</span>';
+      }
+      
+      // Apply current language state to new elements
+      const russianElements = instructionEl.querySelectorAll('.russian-text');
+      const englishElements = instructionEl.querySelectorAll('.english-text');
+      
+      russianElements.forEach(el => {
+        if (!showRussian) {
+          el.classList.add('hidden');
+        }
+      });
+      
+      englishElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('visible');
+        } else {
+          el.classList.add('visible');
+        }
+      });
+    }
+
+    // Toggle Language
+    function toggleLanguage() {
+      showRussian = !showRussian;
+      const russianElements = document.querySelectorAll('.russian-text');
+      const englishElements = document.querySelectorAll('.english-text');
+      
+      russianElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      englishElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('visible');
+        } else {
+          el.classList.add('visible');
+        }
+      });
+      
+      updateInstruction();
+      
+      // Update content context if visible
+      if (selectedSection && selectedContext) {
+        const contextEl = document.getElementById('contentContext');
+        if (showRussian) {
+          contextEl.innerHTML = selectedContext === 'time' ? '🕐 ВРЕМЯ' : '📍 МЕСТО';
+        } else {
+          contextEl.innerHTML = selectedContext === 'time' ? '🕐 TIME' : '📍 PLACE';
+        }
+        
+        // Update flip card content
+        updateFlipCardContent();
+      }
+    }
+
+    // Toggle Night Mode
+    function toggleNightMode() {
+      nightMode = !nightMode;
+      document.body.classList.toggle('night-mode', nightMode);
+      document.getElementById('night-toggle-icon').textContent = nightMode ? '☀️' : '🌙';
+      
+      // Update SVG gradients for night mode
+      const gradIn = document.getElementById('gradIn');
+      const gradOn = document.getElementById('gradOn');
+      const gradAt = document.getElementById('gradAt');
+      
+      if (nightMode) {
+        gradIn.innerHTML = '<stop offset="0%" style="stop-color:#2E5F7A;stop-opacity:1" /><stop offset="100%" style="stop-color:#2F6B5F;stop-opacity:1" />';
+        gradOn.innerHTML = '<stop offset="0%" style="stop-color:#8F5F57;stop-opacity:1" /><stop offset="100%" style="stop-color:#8F6647;stop-opacity:1" />';
+        gradAt.innerHTML = '<stop offset="0%" style="stop-color:#6B5F7D;stop-opacity:1" /><stop offset="100%" style="stop-color:#5F4A75;stop-opacity:1" />';
+      } else {
+        gradIn.innerHTML = '<stop offset="0%" style="stop-color:#5DADE2;stop-opacity:1" /><stop offset="100%" style="stop-color:#48C9B0;stop-opacity:1" />';
+        gradOn.innerHTML = '<stop offset="0%" style="stop-color:#F1948A;stop-opacity:1" /><stop offset="100%" style="stop-color:#E59866;stop-opacity:1" />';
+        gradAt.innerHTML = '<stop offset="0%" style="stop-color:#BB8FCE;stop-opacity:1" /><stop offset="100%" style="stop-color:#9B59B6;stop-opacity:1" />';
+      }
+    }
+
+    // Flip Card Handler
+    function flipCard(event) {
+      const card = document.getElementById('flipCard');
+      if (card) {
+        card.classList.toggle('flipped');
+      }
+      event.stopPropagation();
+    }
+
+    // Update Flip Card Content (for language toggle)
+    function updateFlipCardContent() {
+      const flipCardData = {
+        in: {
+          backContentEn: `
+            <p><strong>IN is at the widest part of the triangle.</strong></p>
+            <p>Use IN for BIG, GENERAL things:</p>
+            <ul>
+              <li>Whole countries (in Thailand, in Russia)</li>
+              <li>Entire cities (in Bangkok, in Moscow)</li>
+              <li>Long time periods (in 2025, in March, in the 1990's)</li>
+            </ul>
+            <p>Think: You're INSIDE something large and general.</p>
+          `,
+          backContentRu: `
+            <p><strong>IN находится в самой широкой части треугольника.</strong></p>
+            <p>Используйте IN для БОЛЬШИХ, ОБЩИХ вещей:</p>
+            <ul>
+              <li>Целые страны (in Thailand, in Russia)</li>
+              <li>Целые города (in Bangkok, in Moscow)</li>
+              <li>Длительные периоды (in 2025, in March, in the 1990's)</li>
+            </ul>
+            <p>Подумайте: Вы ВНУТРИ чего-то большого и общего.</p>
+          `
+        },
+        on: {
+          backContentEn: `
+            <p><strong>ON is in the middle of the triangle - more specific.</strong></p>
+            <p>Use ON for things you can touch or that are MORE FOCUSED:</p>
+            <ul>
+              <li>Surfaces (on the table, on the floor)</li>
+              <li>Particular streets (on Sukhumvit Road)</li>
+              <li>Individual days (on Monday, on April 3rd)</li>
+            </ul>
+            <p>Think: You're ON TOP of something specific.</p>
+          `,
+          backContentRu: `
+            <p><strong>ON находится в середине треугольника - более конкретно.</strong></p>
+            <p>Используйте ON для вещей, которых можно коснуться, или более ТОЧНЫХ:</p>
+            <ul>
+              <li>Поверхности (on the table, on the floor)</li>
+              <li>Конкретные улицы (on Sukhumvit Road)</li>
+              <li>Отдельные дни (on Monday, on April 3rd)</li>
+            </ul>
+            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то конкретного.</p>
+          `
+        },
+        at: {
+          backContentEn: `
+            <p><strong>AT is at the narrowest point - most precise.</strong></p>
+            <p>Use AT for EXACT, SPECIFIC locations and times:</p>
+            <ul>
+              <li>Exact times (at 8:30 a.m., at midnight)</li>
+              <li>Specific addresses (at 123 Sukhumvit Soi 11)</li>
+              <li>Pinpoint locations (at the station, at home)</li>
+            </ul>
+            <p>Think: You're AT A SINGLE POINT.</p>
+          `,
+          backContentRu: `
+            <p><strong>AT находится в самой узкой точке - максимально точно.</strong></p>
+            <p>Используйте AT для ТОЧНЫХ, КОНКРЕТНЫХ мест и времени:</p>
+            <ul>
+              <li>Точное время (at 8:30 a.m., at midnight)</li>
+              <li>Конкретные адреса (at 123 Sukhumvit Soi 11)</li>
+              <li>Точные места (at the station, at home)</li>
+            </ul>
+            <p>Подумайте: Вы В ОДНОЙ ТОЧКЕ.</p>
+          `
+        }
+      };
+      
+      const cardData = flipCardData[selectedSection];
+      const backContent = showRussian ? cardData.backContentRu : cardData.backContentEn;
+      const hintText = showRussian ? 'Нажмите, чтобы узнать больше ⓘ' : 'Tap to learn more ⓘ';
+      
+      // Update back content
+      const flipCardBack = document.querySelector('.flip-card-back');
+      if (flipCardBack) {
+        flipCardBack.innerHTML = backContent;
+      }
+      
+      // Update hint text
+      const flipCardHint = document.querySelector('.flip-card-hint');
+      if (flipCardHint) {
+        flipCardHint.textContent = hintText;
+      }
+    }
+
+    // Open Practice Level
+    function openPractice(level) {
+      // Hide triangle, context selector, and practice levels
+      document.getElementById('triangleContainer').classList.add('hidden');
+      document.getElementById('contextSelector').classList.add('hidden');
+      document.getElementById('instructionText').classList.add('hidden');
+      document.getElementById('practiceLevels').classList.add('hidden');
+      
+      // Set practice title
+      const levelNames = {
+        'A2': showRussian ? 'Уровень A2 - Начальный' : 'Level A2 - Elementary',
+        'B1': showRussian ? 'Уровень B1 - Средний' : 'Level B1 - Intermediate',
+        'B2': showRussian ? 'Уровень B2 - Выше среднего' : 'Level B2 - Upper Intermediate',
+        'C1': showRussian ? 'Уровень C1 - Продвинутый' : 'Level C1 - Advanced'
+      };
+      
+      document.getElementById('practiceTitle').textContent = levelNames[level];
+      
+      // Build exercises
+      const exercises = practiceData[level];
+      const exercisesEl = document.getElementById('practiceExercises');
+      exercisesEl.innerHTML = '';
+      
+      exercises.forEach((exercise, index) => {
+        const card = document.createElement('div');
+        card.className = 'exercise-card';
+        card.dataset.index = index;
+        card.dataset.correct = exercise.correct;
+        card.dataset.explanation = exercise.explanation;
+        
+        card.innerHTML = `
+          <div class="exercise-number">
+            <span class="russian-text">Вопрос ${index + 1}</span>
+            <span class="english-text">Question ${index + 1}</span>
+          </div>
+          <div class="exercise-question">${exercise.question}</div>
+          <div class="exercise-options">
+            ${exercise.options.map((option, optIndex) => `
+              <button class="option-btn" onclick="checkAnswer(${index}, ${optIndex})">
+                ${option.toUpperCase()}
+              </button>
+            `).join('')}
+          </div>
+          <div class="exercise-explanation" style="display: none; margin-top: 15px; padding: 15px; background: #E8F5E9; border-radius: 8px; color: #2E7D32;"></div>
+        `;
+        
+        exercisesEl.appendChild(card);
+      });
+      
+      // Apply language state to new elements
+      const russianElements = exercisesEl.querySelectorAll('.russian-text');
+      const englishElements = exercisesEl.querySelectorAll('.english-text');
+      
+      russianElements.forEach(el => {
+        if (!showRussian) {
+          el.classList.add('hidden');
+        }
+      });
+      
+      englishElements.forEach(el => {
+        if (showRussian) {
+          el.classList.remove('visible');
+        } else {
+          el.classList.add('visible');
+        }
+      });
+      
+      // Show practice view and reset button
+      document.getElementById('practiceView').classList.add('active');
+      document.getElementById('resetBtn').classList.add('visible');
+    }
+
+    // Check Answer
+    function checkAnswer(exerciseIndex, selectedIndex) {
+      const card = document.querySelector(`.exercise-card[data-index="${exerciseIndex}"]`);
+      const buttons = card.querySelectorAll('.option-btn');
+      const explanationDiv = card.querySelector('.exercise-explanation');
+      
+      // Get correct answer and explanation from data attributes
+      const correctIndex = parseInt(card.dataset.correct);
+      const explanation = card.dataset.explanation;
+      
+      // Disable all buttons
+      buttons.forEach(btn => btn.classList.add('disabled'));
+      
+      // Mark correct and wrong
+      buttons[correctIndex].classList.add('correct');
+      if (selectedIndex !== correctIndex) {
+        buttons[selectedIndex].classList.add('wrong');
+      }
+      
+      // Show explanation
+      explanationDiv.textContent = explanation;
+      explanationDiv.style.display = 'block';
+      
+      // Apply night mode to explanation if needed
+      if (nightMode) {
+        explanationDiv.style.background = '#2F4238';
+        explanationDiv.style.color = '#A8D1AA';
+      }
+    }
+
+    // Initialize
+    updateInstruction();
+  </script>
+</body>
+</html>
