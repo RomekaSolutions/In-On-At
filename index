@@ -981,7 +981,7 @@
       }
 
       .practice-levels {
-        bottom: 10px;
+        bottom: 70px;
         right: 10px;
         gap: 5px;
         max-width: 280px;
@@ -1718,24 +1718,24 @@
           frontClass: 'on-front',
           backClass: 'on-back',
           backContentEn: `
-            <p><strong>ON is in the middle of the triangle - more specific.</strong></p>
-            <p>Use ON for things you can touch or that are MORE FOCUSED:</p>
+            <p><strong>ON is in the middle of the triangle.</strong></p>
+            <p>Use ON for SURFACES and INDIVIDUAL items:</p>
             <ul>
               <li>Surfaces (on the table, on the floor)</li>
               <li>Particular streets (on Sukhumvit Road)</li>
               <li>Individual days (on Monday, on April 3rd)</li>
             </ul>
-            <p>Think: You're ON TOP of something specific.</p>
+            <p>Think: You're ON TOP of something tangible.</p>
           `,
           backContentRu: `
-            <p><strong>ON находится в середине треугольника - более конкретно.</strong></p>
-            <p>Используйте ON для вещей, которых можно коснуться, или более ТОЧНЫХ:</p>
+            <p><strong>ON находится в середине треугольника.</strong></p>
+            <p>Используйте ON для ПОВЕРХНОСТЕЙ и ОТДЕЛЬНЫХ элементов:</p>
             <ul>
               <li>Поверхности (on the table, on the floor)</li>
               <li>Конкретные улицы (on Sukhumvit Road)</li>
               <li>Отдельные дни (on Monday, on April 3rd)</li>
             </ul>
-            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то конкретного.</p>
+            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то осязаемого.</p>
           `
         },
         at: {
@@ -1743,24 +1743,24 @@
           frontClass: 'at-front',
           backClass: 'at-back',
           backContentEn: `
-            <p><strong>AT is at the narrowest point - most precise.</strong></p>
-            <p>Use AT for EXACT, SPECIFIC locations and times:</p>
+            <p><strong>AT is at the point of the triangle.</strong></p>
+            <p>Use AT for EXACT, PINPOINT locations and times:</p>
             <ul>
               <li>Exact times (at 8:30 a.m., at midnight)</li>
               <li>Specific addresses (at 123 Sukhumvit Soi 11)</li>
               <li>Pinpoint locations (at the station, at home)</li>
             </ul>
-            <p>Think: You're AT A SINGLE POINT.</p>
+            <p>Think: You're AT ONE SPECIFIC POINT.</p>
           `,
           backContentRu: `
-            <p><strong>AT находится в самой узкой точке - максимально точно.</strong></p>
+            <p><strong>AT находится на вершине треугольника.</strong></p>
             <p>Используйте AT для ТОЧНЫХ, КОНКРЕТНЫХ мест и времени:</p>
             <ul>
               <li>Точное время (at 8:30 a.m., at midnight)</li>
               <li>Конкретные адреса (at 123 Sukhumvit Soi 11)</li>
               <li>Точные места (at the station, at home)</li>
             </ul>
-            <p>Подумайте: Вы В ОДНОЙ ТОЧКЕ.</p>
+            <p>Подумайте: Вы В ОДНОЙ КОНКРЕТНОЙ ТОЧКЕ.</p>
           `
         }
       };
@@ -1998,46 +1998,46 @@
         },
         on: {
           backContentEn: `
-            <p><strong>ON is in the middle of the triangle - more specific.</strong></p>
-            <p>Use ON for things you can touch or that are MORE FOCUSED:</p>
+            <p><strong>ON is in the middle of the triangle.</strong></p>
+            <p>Use ON for SURFACES and INDIVIDUAL items:</p>
             <ul>
               <li>Surfaces (on the table, on the floor)</li>
               <li>Particular streets (on Sukhumvit Road)</li>
               <li>Individual days (on Monday, on April 3rd)</li>
             </ul>
-            <p>Think: You're ON TOP of something specific.</p>
+            <p>Think: You're ON TOP of something tangible.</p>
           `,
           backContentRu: `
-            <p><strong>ON находится в середине треугольника - более конкретно.</strong></p>
-            <p>Используйте ON для вещей, которых можно коснуться, или более ТОЧНЫХ:</p>
+            <p><strong>ON находится в середине треугольника.</strong></p>
+            <p>Используйте ON для ПОВЕРХНОСТЕЙ и ОТДЕЛЬНЫХ элементов:</p>
             <ul>
               <li>Поверхности (on the table, on the floor)</li>
               <li>Конкретные улицы (on Sukhumvit Road)</li>
               <li>Отдельные дни (on Monday, on April 3rd)</li>
             </ul>
-            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то конкретного.</p>
+            <p>Подумайте: Вы НА ПОВЕРХНОСТИ чего-то осязаемого.</p>
           `
         },
         at: {
           backContentEn: `
-            <p><strong>AT is at the narrowest point - most precise.</strong></p>
-            <p>Use AT for EXACT, SPECIFIC locations and times:</p>
+            <p><strong>AT is at the point of the triangle.</strong></p>
+            <p>Use AT for EXACT, PINPOINT locations and times:</p>
             <ul>
               <li>Exact times (at 8:30 a.m., at midnight)</li>
               <li>Specific addresses (at 123 Sukhumvit Soi 11)</li>
               <li>Pinpoint locations (at the station, at home)</li>
             </ul>
-            <p>Think: You're AT A SINGLE POINT.</p>
+            <p>Think: You're AT ONE SPECIFIC POINT.</p>
           `,
           backContentRu: `
-            <p><strong>AT находится в самой узкой точке - максимально точно.</strong></p>
+            <p><strong>AT находится на вершине треугольника.</strong></p>
             <p>Используйте AT для ТОЧНЫХ, КОНКРЕТНЫХ мест и времени:</p>
             <ul>
               <li>Точное время (at 8:30 a.m., at midnight)</li>
               <li>Конкретные адреса (at 123 Sukhumvit Soi 11)</li>
               <li>Точные места (at the station, at home)</li>
             </ul>
-            <p>Подумайте: Вы В ОДНОЙ ТОЧКЕ.</p>
+            <p>Подумайте: Вы В ОДНОЙ КОНКРЕТНОЙ ТОЧКЕ.</p>
           `
         }
       };
