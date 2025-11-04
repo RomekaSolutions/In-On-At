@@ -28,7 +28,7 @@
 
     /* Branding Header */
     .branding {
-      position: fixed;
+      position: sticky;
       top: 15px;
       left: 15px;
       z-index: 1000;
@@ -494,38 +494,37 @@
     /* Practice Levels Section */
     .practice-levels {
       position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
+      bottom: 15px;
+      right: 15px;
       display: flex;
-      gap: 12px;
+      gap: 6px;
       z-index: 100;
       transition: all 0.4s ease;
-      padding: 0 20px;
+      padding: 0;
       flex-wrap: wrap;
-      justify-content: center;
-      max-width: 100%;
+      justify-content: flex-end;
+      max-width: 320px;
     }
 
     .practice-levels.hidden {
       opacity: 0;
       pointer-events: none;
-      transform: translateX(-50%) translateY(20px);
+      transform: translateY(20px);
     }
 
     .practice-level-btn {
       background: white;
-      border: 3px solid #7BA591;
-      border-radius: 12px;
-      padding: 15px 20px;
+      border: 2px solid #7BA591;
+      border-radius: 8px;
+      padding: 8px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-width: 70px;
+      min-width: 50px;
     }
 
     body.night-mode .practice-level-btn {
@@ -548,10 +547,10 @@
     }
 
     .level-badge {
-      font-size: 1.5em;
+      font-size: 1em;
       font-weight: 700;
       color: #2E7D32;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
     body.night-mode .level-badge {
@@ -559,11 +558,11 @@
     }
 
     .level-label {
-      font-size: 0.75em;
+      font-size: 0.55em;
       font-weight: 600;
       color: #6B675F;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     body.night-mode .level-label {
@@ -982,21 +981,23 @@
       }
 
       .practice-levels {
-        bottom: 60px;
-        gap: 8px;
+        bottom: 10px;
+        right: 10px;
+        gap: 5px;
+        max-width: 280px;
       }
 
       .practice-level-btn {
-        min-width: 65px;
-        padding: 12px 15px;
+        min-width: 45px;
+        padding: 6px 10px;
       }
 
       .level-badge {
-        font-size: 1.3em;
+        font-size: 0.9em;
       }
 
       .level-label {
-        font-size: 0.65em;
+        font-size: 0.5em;
       }
 
       .practice-level-title {
