@@ -333,7 +333,7 @@
     /* Instruction Text */
     .instruction-text {
       position: absolute;
-      bottom: 15px;
+      bottom: 90px;
       text-align: center;
       font-size: 1.15em;
       color: #6B675F;
@@ -341,6 +341,8 @@
       transition: all 0.4s ease;
       padding: 0 20px;
       width: 100%;
+      left: 0;
+      right: 0;
     }
 
     body.night-mode .instruction-text {
@@ -495,15 +497,16 @@
     .practice-levels {
       position: absolute;
       bottom: 15px;
-      right: 15px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      gap: 6px;
+      gap: 8px;
       z-index: 100;
       transition: all 0.4s ease;
       padding: 0;
       flex-wrap: wrap;
-      justify-content: flex-end;
-      max-width: 320px;
+      justify-content: center;
+      max-width: 500px;
     }
 
     .practice-levels.hidden {
@@ -980,16 +983,25 @@
         font-size: 32px;
       }
 
+      .instruction-text {
+        bottom: 100px;
+        font-size: 1em;
+        padding: 0 15px;
+      }
+
       .practice-levels {
-        bottom: 70px;
-        right: 10px;
-        gap: 5px;
-        max-width: 280px;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 6px;
+        max-width: calc(100% - 20px);
+        padding: 0 10px;
       }
 
       .practice-level-btn {
-        min-width: 45px;
-        padding: 6px 10px;
+        min-width: 70px;
+        padding: 8px 10px;
+        flex: 0 1 auto;
       }
 
       .level-badge {
